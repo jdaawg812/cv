@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evie's 10th Birthday</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap');
+
+        :root {
+            --pop-pink: #FF92A9; 
+            --pop-blue: #A2D2FF;
+            --pop-green: #B5E48C;
+            --pop-purple: #CDB4DB;
+            --pop-yellow: #FFEF96;
+            --text-color: #5D576B;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .card-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 528px;
+            border-radius: 0;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+            overflow: visible;
+            text-align: center;
+            padding: 0;
+            border: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 600px) {
+            .card-container {
+                border-radius: 30px;
+                width: 90%;
+            }
+        }
+
+        .content-wrapper {
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--pop-pink) 0%, var(--pop-purple) 50%, var(--pop-blue) 100%);
+            margin: 0 -2rem 0 -2rem;
+            padding: 3rem 0 2rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @media (min-width: 600px) {
+            .header-section {
+                border-radius: 30px 30px 0 0;
+            }
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            color: white;
+            margin: 0 15px;
+            text-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+            line-height: 1;
+            transform: rotate(-2deg) scale(1.05);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .banner-graphic {
+            background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+            padding: 8px 30px 17px 30px;
+            margin: 0 calc(-2rem - 15px) 1.5rem calc(-2rem - 15px);
+            position: relative;
+            overflow: visible;
+            z-index: 5;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 10px),
+                calc(100% - 15px) 100%,
+                calc(100% - 15px) calc(100% - 10px),
+                15px calc(100% - 10px),
+                15px 100%,
+                0 calc(100% - 10px)
+            );
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+            color: white;
+            margin: 0;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 400px) {
+            h1 { font-size: 2.4rem; margin: 0 10px; }
+            h2 { font-size: 1.1rem; letter-spacing: 2px; }
+        }
+
+        /* Try Me Sticker */
+        .try-me-sticker {
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            background: var(--pop-yellow);
+            border: 3px solid #5D576B;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1rem;
+            color: #5D576B;
+            text-transform: uppercase;
+            transform: rotate(15deg);
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            animation: pulse-sticker 2s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @keyframes pulse-sticker {
+            0%, 100% { transform: rotate(15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+        }
+
+        /* ILLUSTRATION STYLES */
+        .illustration-box {
+            margin: 10px auto;
+            width: 240px;
+            height: 280px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        svg { overflow: visible; }
+
+        /* Animations */
+        @keyframes blink {
+            0%, 100% { fill: #fff; }
+            50% { fill: #FFEF96; }
+        }
+        .lights circle { animation: blink 1s infinite alternate; }
+
+        /* Claw Movement Logic */
+        #claw-assembly {
+            transition: transform 0.1s linear; /* Horizontal movement */
+            transform-origin: top center; 
+        }
+
+        /* CSS Transitions for smooth animation */
+        .claw-rod { transition: height 1s ease-in-out; }
+        .claw-fingers { transition: transform 1s ease-in-out; }
+
+        .details-section {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px solid var(--pop-pink);
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 6px 6px 0px rgba(205, 180, 219, 0.4);
+        }
+
+        .detail-row { margin-bottom: 14px; }
+        .detail-label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--pop-purple);
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .detail-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.3;
+        }
+        .detail-subtext { font-size: 0.95rem; font-weight: 500; color: #555; }
+        .highlight { color: var(--pop-blue); font-family: 'Fredoka One', cursive; letter-spacing: 0.5px; font-size: 1.4rem; -webkit-text-stroke: 1px #5D576B; }
+
+        a { color: var(--text-color); text-decoration: none; border-bottom: 2px solid var(--pop-green);}
+
+        /* Integrated Footer */
+        .card-footer {
+            background: #e8e8e8;
+            color: #555;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            padding: 15px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            animation: confetti-fall 3s linear forwards;
+            opacity: 1;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="content-wrapper">
+            <div class="header-section">
+                <h1>Evie's Clawsome 10th birthday party!</h1>
+            </div>
+
+            <div class="banner-graphic">
+                <h2>Grab a Prize & Celebrate</h2>
+            </div>
+
+            <!-- SVG Illustration of Claw Machine -->
+            <div class="illustration-box" id="game-area">
+                <div class="try-me-sticker">Try Me!</div>
+                <svg viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 1. Machine Body (Back) -->
+                    <rect x="20" y="20" width="200" height="250" rx="12" fill="#FF92A9" stroke="#5D576B" stroke-width="3"/>
+                    
+                    <!-- 2. Inner Back Wall (Pink area) -->
+                    <rect x="25" y="60" width="190" height="140" fill="#FFF0F5" />
+
+                    <!-- 3. PRIZES CONTAINER (Squishmallows) - Rendered BEHIND the glass/front panel -->
+                    <g id="prizes-container">
+                        <!-- 1. Green Frog -->
+                        <g class="prize" id="prize-0" transform="translate(70, 165)">
+                            <circle cx="8" cy="5" r="5" fill="#B5E48C" stroke="#5D576B" stroke-width="1.5"/>
+                            <circle cx="22" cy="5" r="5" fill="#B5E48C" stroke="#5D576B" stroke-width="1.5"/>
+                            <rect x="0" y="5" width="30" height="25" rx="10" fill="#B5E48C" stroke="#5D576B" stroke-width="1.5"/>
+                            <ellipse cx="15" cy="20" rx="8" ry="6" fill="#fff" opacity="0.6"/>
+                            <circle cx="8" cy="5" r="1" fill="#333"/>
+                            <circle cx="22" cy="5" r="1" fill="#333"/>
+                            <path d="M 12 15 Q 15 18 18 15" fill="none" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- 2. Purple Bunny -->
+                        <g class="prize" id="prize-1" transform="translate(110, 165)">
+                            <ellipse cx="8" cy="0" rx="3" ry="8" fill="#CDB4DB" stroke="#5D576B" stroke-width="1.5"/>
+                            <ellipse cx="22" cy="0" rx="3" ry="8" fill="#CDB4DB" stroke="#5D576B" stroke-width="1.5"/>
+                            <rect x="0" y="5" width="30" height="25" rx="10" fill="#CDB4DB" stroke="#5D576B" stroke-width="1.5"/>
+                            <circle cx="10" cy="14" r="1.5" fill="#333"/>
+                            <circle cx="20" cy="14" r="1.5" fill="#333"/>
+                            <path d="M 13 18 L 15 19 L 17 18" fill="none" stroke="#333" stroke-width="1"/>
+                        </g>
+
+                        <!-- 3. Pink Cat -->
+                        <g class="prize" id="prize-2" transform="translate(150, 165)">
+                            <path d="M 2 8 L 8 0 L 14 8 Z" fill="#FF92A9" stroke="#5D576B" stroke-width="1.5"/>
+                            <path d="M 18 8 L 24 0 L 30 8 Z" fill="#FF92A9" stroke="#5D576B" stroke-width="1.5"/>
+                            <rect x="2" y="5" width="28" height="24" rx="10" fill="#FF92A9" stroke="#5D576B" stroke-width="1.5"/>
+                            <circle cx="10" cy="14" r="1.5" fill="#333"/>
+                            <circle cx="22" cy="14" r="1.5" fill="#333"/>
+                            <path d="M 13 18 Q 16 21 19 18" fill="none" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- 4. Blue Bear -->
+                        <g class="prize" id="prize-3" transform="translate(175, 165)">
+                            <circle cx="5" cy="5" r="5" fill="#A2D2FF" stroke="#5D576B" stroke-width="1.5"/>
+                            <circle cx="25" cy="5" r="5" fill="#A2D2FF" stroke="#5D576B" stroke-width="1.5"/>
+                            <rect x="0" y="5" width="30" height="25" rx="10" fill="#A2D2FF" stroke="#5D576B" stroke-width="1.5"/>
+                            <ellipse cx="15" cy="20" rx="9" ry="7" fill="#fff" opacity="0.6"/>
+                            <circle cx="10" cy="12" r="1.5" fill="#333"/>
+                            <circle cx="20" cy="12" r="1.5" fill="#333"/>
+                            <ellipse cx="15" cy="16" rx="2" ry="1.5" fill="#333"/>
+                        </g>
+                    </g>
+
+                    <!-- 4. THE CLAW ASSEMBLY - Rendered AFTER prizes so it can go in front, but BEFORE glass -->
+                    <g id="claw-assembly" transform="translate(120, 60)"> 
+                        <!-- The Rod (SVG Rect that changes height) -->
+                        <rect id="claw-rod" class="claw-rod" x="-2" y="0" width="4" height="20" fill="#555"/>
+                        
+                        <!-- The Claw Fingers Group -->
+                        <g id="claw-fingers" class="claw-fingers" transform="translate(0, 20)">
+                            <!-- Housing -->
+                            <circle cx="0" cy="0" r="6" fill="#333"/>
+                            <!-- Left Finger -->
+                            <path id="left-finger" d="M -5 0 Q -20 15 -10 30" fill="none" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Right Finger -->
+                            <path id="right-finger" d="M 5 0 Q 20 15 10 30" fill="none" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+                            
+                            <!-- Placeholder group for holding a prize inside the claw -->
+                            <g id="claw-grip-point"></g>
+                        </g>
+                    </g>
+
+                    <!-- 5. Glass Reflection (Transparent) -->
+                    <path d="M 30 65 L 50 185 L 40 185 L 30 65" fill="white" opacity="0.2" pointer-events="none"/>
+                    <path d="M 190 65 L 200 65 L 190 100" fill="white" opacity="0.2" pointer-events="none"/>
+
+                    <!-- 6. Glass Frame Border -->
+                    <rect x="25" y="60" width="190" height="140" fill="none" stroke="#5D576B" stroke-width="2" rx="5" pointer-events="none"/>
+
+                    <!-- 7. Top Header (Covers top of rod) -->
+                    <rect x="15" y="15" width="210" height="45" rx="8" fill="#CDB4DB" stroke="#5D576B" stroke-width="3"/>
+                    <text x="120" y="41" font-family="'Fredoka One', cursive" font-size="20" fill="#fff" text-anchor="middle" letter-spacing="2" dominant-baseline="middle">STARBUNNI</text>
+                    <g class="lights">
+                        <circle cx="35" cy="38" r="5" fill="#fff" stroke="#5D576B" stroke-width="1"/>
+                        <circle cx="120" cy="22" r="4" fill="#fff" stroke="#5D576B" stroke-width="1"/>
+                        <circle cx="205" cy="38" r="5" fill="#fff" stroke="#5D576B" stroke-width="1"/>
+                    </g>
+
+                    <!-- 8. Control Panel (Covers bottom of prizes/claw when dropped) -->
+                    <rect x="20" y="210" width="200" height="60" fill="#A2D2FF" rx="5" stroke="#5D576B" stroke-width="3"/>
+                    <rect x="40" y="225" width="50" height="10" fill="#5D576B" rx="2"/>
+                    <circle cx="65" cy="230" r="4" fill="#333"/>
+                    <line x1="65" y1="230" x2="65" y2="250" stroke="#FF92A9" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="65" cy="250" r="10" fill="#FF92A9" stroke="#5D576B" stroke-width="1"/>
+
+                    <!-- Buttons -->
+                    <circle cx="140" cy="240" r="10" fill="#FFEF96" stroke="#5D576B" stroke-width="2"/>
+                    <circle cx="175" cy="240" r="10" fill="#B5E48C" stroke="#5D576B" stroke-width="2"/>
+                    
+                    <!-- Prize Chute -->
+                    <rect x="80" y="260" width="80" height="10" fill="#333" rx="2"/>
+                </svg>
+            </div>
+
+            <div class="details-section">
+                <div class="detail-row">
+                    <span class="detail-label">When</span>
+                    <div class="detail-text">Dec 13th</div>
+                    <div class="detail-text">10:30 AM - 12:00 PM</div>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Where</span>
+                    <div class="detail-text highlight">Starbunni</div>
+                    <div class="detail-subtext">3380 Blackhawk Plaza Circle</div>
+                    <div class="detail-subtext">Suite F2</div>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Details</span>
+                    <div class="detail-subtext">Drinks & bites will be served</div>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">RSVP</span>
+                    <div class="detail-subtext">
+                        By Dec 6 to Cary<br>
+                        <a href="tel:5103877040">510-387-7040</a>
+                    </div>
+                </div>
+
+                <!-- Integrated Footer -->
+                <div class="card-footer">
+                    Drop-off welcome!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const gameArea = document.getElementById('game-area');
+        const clawAssembly = document.getElementById('claw-assembly');
+        const clawRod = document.getElementById('claw-rod');
+        const clawFingers = document.getElementById('claw-fingers');
+        const leftFinger = document.getElementById('left-finger');
+        const rightFinger = document.getElementById('right-finger');
+        const clawGripPoint = document.getElementById('claw-grip-point');
+        const prizesContainer = document.getElementById('prizes-container');
+        
+        // Prize data: x is the center position relative to SVG (transform position + 15px for center of 30px wide prize)
+        const prizes = [
+            { id: 'prize-0', x: 85, el: document.getElementById('prize-0') },
+            { id: 'prize-1', x: 125, el: document.getElementById('prize-1') },
+            { id: 'prize-2', x: 165, el: document.getElementById('prize-2') },
+            { id: 'prize-3', x: 190, el: document.getElementById('prize-3') }
+        ];
+
+        let isAnimating = false;
+        let currentClawX = 120; // Center start
+
+        // Function to update claw position from event
+        function updateClawPosition(clientX) {
+            if (isAnimating) return;
+
+            const rect = gameArea.getBoundingClientRect();
+            const svgWidth = 240;
+
+            // Calculate X within SVG coordinate system
+            let x = (clientX - rect.left) * (svgWidth / rect.width);
+
+            // Clamp movement
+            if (x < 50) x = 50;
+            if (x > 190) x = 190;
+
+            currentClawX = x;
+            clawAssembly.setAttribute('transform', `translate(${x}, 60)`);
+        }
+
+        // Mouse Follow Logic
+        gameArea.addEventListener('mousemove', (e) => {
+            updateClawPosition(e.clientX);
+        });
+
+        // Touch Follow Logic
+        gameArea.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                updateClawPosition(e.touches[0].clientX);
+            }
+        });
+
+        // Click/Tap Logic - update position first, then run sequence
+        gameArea.addEventListener('click', (e) => {
+            if (isAnimating) return;
+            updateClawPosition(e.clientX);
+            runClawSequence();
+        });
+
+        gameArea.addEventListener('touchstart', (e) => {
+            if (isAnimating) return;
+            if (e.touches.length > 0) {
+                updateClawPosition(e.touches[0].clientX);
+                runClawSequence();
+            }
+        });
+
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.className = 'confetti-container';
+            document.body.appendChild(confettiContainer);
+
+            const colors = ['#FF92A9', '#A2D2FF', '#B5E48C', '#CDB4DB', '#FFEF96'];
+            const confettiCount = 100;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+
+            // Remove confetti after animation
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 5000);
+        }
+
+        function runClawSequence() {
+            isAnimating = true;
+
+            // 1. Drop
+            clawRod.style.height = '95px';
+            clawFingers.style.transform = 'translate(0, 95px)';
+
+            setTimeout(() => {
+                // 2. Grab Attempt (grab the closest prize within range)
+                let grabbedPrize = null;
+                let minDistance = 25; // threshold
+                prizes.forEach(p => {
+                    const distance = Math.abs(currentClawX - p.x);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        grabbedPrize = p;
+                    }
+                });
+
+                // Close claw visuals
+                leftFinger.setAttribute('d', 'M -5 0 Q -10 20 0 30');
+                rightFinger.setAttribute('d', 'M 5 0 Q 10 20 0 30');
+
+                // If we grabbed something, attach it to the claw group!
+                if (grabbedPrize) {
+                    // Ensure any previous animation is cancelled before re-parenting
+                    if(grabbedPrize.el.getAnimations) {
+                        grabbedPrize.el.getAnimations().forEach(anim => anim.cancel());
+                    }
+
+                    clawGripPoint.appendChild(grabbedPrize.el);
+                    grabbedPrize.el.setAttribute('transform', 'translate(-15, 10)');
+                }
+
+                setTimeout(() => {
+                    // 3. Lift
+                    clawRod.style.height = '20px';
+                    clawFingers.style.transform = 'translate(0, 20px)';
+
+                    setTimeout(() => {
+                        // 4. Determine outcome: 3 variations
+                        // Variation 1 (20%): Normal drop (wiggle and drop back to prize area)
+                        // Variation 2 (40%): Claw retains and moves left, but drops en route
+                        // Variation 3 (40%): Success! Moves left and dispenses with confetti
+
+                        if (grabbedPrize) {
+                            const outcome = Math.random();
+
+                            if (outcome < 0.2) {
+                                // VARIATION 1: Normal wiggle and drop back (reduced shake)
+                                clawAssembly.animate([
+                                    { transform: `translate(${currentClawX}px, 60px) rotate(0deg)` },
+                                    { transform: `translate(${currentClawX}px, 60px) rotate(2deg)` },
+                                    { transform: `translate(${currentClawX}px, 60px) rotate(-2deg)` },
+                                    { transform: `translate(${currentClawX}px, 60px) rotate(0deg)` }
+                                ], {
+                                    duration: 400,
+                                    iterations: 1
+                                });
+
+                                setTimeout(() => {
+                                    // Open claw
+                                    leftFinger.setAttribute('d', 'M -5 0 Q -20 15 -10 30');
+                                    rightFinger.setAttribute('d', 'M 5 0 Q 20 15 10 30');
+
+                                    // Detach prize and make it fall back
+                                    prizesContainer.appendChild(grabbedPrize.el);
+
+                                    const startY = 90;
+                                    const endY = 165;
+                                    const startX = currentClawX - 15;
+
+                                    grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${startY})`);
+
+                                    const fallAnim = grabbedPrize.el.animate([
+                                        { transform: `translate(${startX}px, ${startY}px)` },
+                                        { transform: `translate(${startX}px, ${endY}px)` }
+                                    ], {
+                                        duration: 500,
+                                        easing: 'cubic-bezier(0.6, 0.04, 0.98, 0.335)',
+                                        fill: 'forwards'
+                                    });
+
+                                    fallAnim.onfinish = () => {
+                                        grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${endY})`);
+                                        fallAnim.cancel();
+                                        grabbedPrize.x = currentClawX;
+                                        isAnimating = false;
+                                    };
+                                }, 500);
+
+                            } else if (outcome < 0.6) {
+                                // VARIATION 2: Claw retains, moves left, drops en route
+                                const targetX = 50; // Left side movement
+                                const moveDistance = currentClawX - targetX;
+                                const moveDuration = 1500;
+
+                                // Animate claw moving left
+                                const moveAnim = clawAssembly.animate([
+                                    { transform: `translate(${currentClawX}px, 60px)` },
+                                    { transform: `translate(${targetX}px, 60px)` }
+                                ], {
+                                    duration: moveDuration,
+                                    easing: 'linear',
+                                    fill: 'forwards'
+                                });
+
+                                // Drop halfway through the movement
+                                setTimeout(() => {
+                                    // Open claw mid-movement
+                                    leftFinger.setAttribute('d', 'M -5 0 Q -20 15 -10 30');
+                                    rightFinger.setAttribute('d', 'M 5 0 Q 20 15 10 30');
+
+                                    // Get current claw position (approx halfway)
+                                    const currentMidX = currentClawX - (moveDistance / 2);
+
+                                    // Check if drop position is close to dispenser (counts as win!)
+                                    const isNearDispenser = currentMidX < 80; // If dropped on left side, it's a win
+
+                                    // Detach prize and make it fall
+                                    prizesContainer.appendChild(grabbedPrize.el);
+
+                                    const startY = 90;
+                                    const startX = currentMidX - 15;
+
+                                    if (isNearDispenser) {
+                                        // WIN! Prize falls into dispenser
+                                        const dispenseY = 270;
+                                        grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${startY})`);
+
+                                        const fallAnim = grabbedPrize.el.animate([
+                                            { transform: `translate(${startX}px, ${startY}px)` },
+                                            { transform: `translate(${startX}px, ${dispenseY}px)` }
+                                        ], {
+                                            duration: 800,
+                                            easing: 'cubic-bezier(0.6, 0.04, 0.98, 0.335)',
+                                            fill: 'forwards'
+                                        });
+
+                                        fallAnim.onfinish = () => {
+                                            grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${dispenseY})`);
+                                            fallAnim.cancel();
+
+                                            // CONFETTI TIME!
+                                            createConfetti();
+
+                                            // Hide the prize (it's been dispensed)
+                                            grabbedPrize.el.style.opacity = '0';
+                                        };
+                                    } else {
+                                        // Regular drop back to prize area
+                                        const endY = 165;
+                                        grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${startY})`);
+
+                                        const fallAnim = grabbedPrize.el.animate([
+                                            { transform: `translate(${startX}px, ${startY}px)` },
+                                            { transform: `translate(${startX}px, ${endY}px)` }
+                                        ], {
+                                            duration: 500,
+                                            easing: 'cubic-bezier(0.6, 0.04, 0.98, 0.335)',
+                                            fill: 'forwards'
+                                        });
+
+                                        fallAnim.onfinish = () => {
+                                            grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${endY})`);
+                                            fallAnim.cancel();
+                                            grabbedPrize.x = startX + 15;
+                                        };
+                                    }
+                                }, moveDuration / 2);
+
+                                // Reset claw position after movement
+                                moveAnim.onfinish = () => {
+                                    clawAssembly.setAttribute('transform', `translate(${targetX}, 60)`);
+                                    moveAnim.cancel();
+                                    currentClawX = targetX;
+
+                                    setTimeout(() => {
+                                        // Return to center
+                                        const returnAnim = clawAssembly.animate([
+                                            { transform: `translate(${targetX}px, 60px)` },
+                                            { transform: `translate(120px, 60px)` }
+                                        ], {
+                                            duration: 1000,
+                                            easing: 'ease-in-out',
+                                            fill: 'forwards'
+                                        });
+
+                                        returnAnim.onfinish = () => {
+                                            clawAssembly.setAttribute('transform', 'translate(120, 60)');
+                                            returnAnim.cancel();
+                                            currentClawX = 120;
+                                            isAnimating = false;
+                                        };
+                                    }, 500);
+                                };
+
+                            } else {
+                                // VARIATION 3: SUCCESS! Move left and dispense with confetti
+                                const targetX = 50; // Dispenser position
+                                const moveDuration = 1500;
+
+                                // Animate claw moving left
+                                const moveAnim = clawAssembly.animate([
+                                    { transform: `translate(${currentClawX}px, 60px)` },
+                                    { transform: `translate(${targetX}px, 60px)` }
+                                ], {
+                                    duration: moveDuration,
+                                    easing: 'linear',
+                                    fill: 'forwards'
+                                });
+
+                                moveAnim.onfinish = () => {
+                                    clawAssembly.setAttribute('transform', `translate(${targetX}, 60)`);
+                                    moveAnim.cancel();
+                                    currentClawX = targetX;
+
+                                    // Open claw to release
+                                    setTimeout(() => {
+                                        leftFinger.setAttribute('d', 'M -5 0 Q -20 15 -10 30');
+                                        rightFinger.setAttribute('d', 'M 5 0 Q 20 15 10 30');
+
+                                        // Detach prize
+                                        prizesContainer.appendChild(grabbedPrize.el);
+
+                                        const startY = 90;
+                                        const dispenseY = 270; // Below machine, behind it
+                                        const startX = targetX - 15;
+
+                                        grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${startY})`);
+
+                                        // Animate fall to dispenser (behind machine)
+                                        const fallAnim = grabbedPrize.el.animate([
+                                            { transform: `translate(${startX}px, ${startY}px)` },
+                                            { transform: `translate(${startX}px, ${dispenseY}px)` }
+                                        ], {
+                                            duration: 800,
+                                            easing: 'cubic-bezier(0.6, 0.04, 0.98, 0.335)',
+                                            fill: 'forwards'
+                                        });
+
+                                        fallAnim.onfinish = () => {
+                                            grabbedPrize.el.setAttribute('transform', `translate(${startX}, ${dispenseY})`);
+                                            fallAnim.cancel();
+
+                                            // CONFETTI TIME!
+                                            createConfetti();
+
+                                            // Hide the prize (it's been dispensed)
+                                            grabbedPrize.el.style.opacity = '0';
+
+                                            // Return claw to center
+                                            setTimeout(() => {
+                                                const returnAnim = clawAssembly.animate([
+                                                    { transform: `translate(${targetX}px, 60px)` },
+                                                    { transform: `translate(120px, 60px)` }
+                                                ], {
+                                                    duration: 1000,
+                                                    easing: 'ease-in-out',
+                                                    fill: 'forwards'
+                                                });
+
+                                                returnAnim.onfinish = () => {
+                                                    clawAssembly.setAttribute('transform', 'translate(120, 60)');
+                                                    returnAnim.cancel();
+                                                    currentClawX = 120;
+                                                    isAnimating = false;
+                                                };
+                                            }, 500);
+                                        };
+                                    }, 300);
+                                };
+                            }
+
+                        } else {
+                            // Nothing grabbed
+                            leftFinger.setAttribute('d', 'M -5 0 Q -20 15 -10 30');
+                            rightFinger.setAttribute('d', 'M 5 0 Q 20 15 10 30');
+                            isAnimating = false;
+                        }
+
+                    }, 1000); // Lift duration
+
+                }, 1000); // Wait at bottom
+
+            }, 1000); // Drop duration
+        }
+    </script>
+</body>
+</html>
