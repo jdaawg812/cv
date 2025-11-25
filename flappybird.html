@@ -55,8 +55,8 @@
         }
 
         .instructions {
-            color: #888;
-            font-size: 14px;
+            color: #ccc;
+            font-size: 16px;
             text-align: center;
         }
 
@@ -65,13 +65,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             padding: 40px;
             border-radius: 20px;
             text-align: center;
             color: white;
             display: none;
             z-index: 10;
+            border: 3px solid #ff6b6b;
         }
 
         .game-over-overlay h2 {
@@ -109,6 +110,9 @@
             box-shadow: 0 0 20px rgba(78, 204, 163, 0.5);
         }
 
+        /* ============================================ */
+        /* IMPROVED START SCREEN STYLES */
+        /* ============================================ */
         .start-screen {
             position: absolute;
             top: 50%;
@@ -117,35 +121,82 @@
             text-align: center;
             color: white;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px 50px;
+            border-radius: 20px;
+            border: 3px solid #4ecca3;
+            box-shadow: 0 0 40px rgba(78, 204, 163, 0.4);
         }
 
         .start-screen h1 {
-            font-size: 48px;
+            font-size: 42px;
             color: #4ecca3;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-shadow: 0 0 20px rgba(78, 204, 163, 0.5);
         }
 
-        .start-screen p {
-            font-size: 20px;
-            color: #ccc;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
         .bird-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 70px;
+            margin-bottom: 15px;
             animation: float 1s ease-in-out infinite;
+            display: block;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* CTA Button Style */
+        .start-cta {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 18px 50px;
+            font-size: 22px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4ecca3 0%, #45b393 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(78, 204, 163, 0.4);
+            animation: pulse-cta 2s ease-in-out infinite;
+        }
+
+        .start-cta:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 25px rgba(78, 204, 163, 0.6);
+        }
+
+        @keyframes pulse-cta {
+            0%, 100% { 
+                box-shadow: 0 4px 15px rgba(78, 204, 163, 0.4);
+            }
+            50% { 
+                box-shadow: 0 4px 30px rgba(78, 204, 163, 0.8);
+            }
+        }
+
+        /* Secondary instruction text */
+        .start-subtext {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .start-subtext kbd {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 14px;
+            font-family: monospace;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #fff;
+            margin: 0 3px;
         }
     </style>
 </head>
@@ -168,10 +219,14 @@
             Press SPACE, click, or tap to flap!
         </div>
 
+        <!-- IMPROVED START SCREEN -->
         <div class="start-screen" id="startScreen">
-            <div class="bird-icon">🐦</div>
+            <span class="bird-icon" role="img" aria-label="Bird">🐦</span>
             <h1>Flappy Bird</h1>
-            <p>Click or press SPACE to start</p>
+            <button class="start-cta" id="startBtn">Play Now</button>
+            <p class="start-subtext">
+                or press <kbd>SPACE</kbd> to start
+            </p>
         </div>
 
         <div class="game-over-overlay" id="gameOverOverlay">
@@ -186,19 +241,41 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const startScreen = document.getElementById('startScreen');
+        const startBtn = document.getElementById('startBtn');
         const gameOverOverlay = document.getElementById('gameOverOverlay');
         const currentScoreEl = document.getElementById('currentScore');
         const bestScoreEl = document.getElementById('bestScore');
         const finalScoreEl = document.getElementById('finalScore');
         const restartBtn = document.getElementById('restartBtn');
 
-        // Game constants
-        const GRAVITY = 0.5;
-        const FLAP_STRENGTH = -9;
-        const PIPE_SPEED = 3;
-        const PIPE_SPAWN_RATE = 90;
-        const PIPE_GAP = 150;
+        // ============================================
+        // ADJUSTED GAME CONSTANTS FOR SLOWER PACE
+        // ============================================
+        
+        // Gravity reduced by ~70% for much floatier feel
+        const GRAVITY = 0.15;
+        
+        // Flap strength - gives a strong, long-lasting lift
+        const FLAP_STRENGTH = -4.5;
+        
+        // Pipe speed reduced by ~60% for slower game pace
+        const PIPE_SPEED = 1.2;
+        
+        // Pipes spawn less frequently (higher number = more time between pipes)
+        const PIPE_SPAWN_RATE = 200;
+        
+        // Larger gap between pipes for easier gameplay
+        const PIPE_GAP = 180;
+        
         const PIPE_WIDTH = 70;
+        
+        // Maximum fall speed (terminal velocity) - limits how fast bird can fall
+        const MAX_FALL_SPEED = 3;
+        
+        // Air resistance - slows down the bird slightly for floatier feel
+        const AIR_RESISTANCE = 0.99;
+
+        // ============================================
 
         // Game state
         let gameState = 'start'; // 'start', 'playing', 'gameover'
@@ -230,8 +307,8 @@
             ctx.save();
             ctx.translate(bird.x + bird.width / 2, bird.y + bird.height / 2);
             
-            // Rotate based on velocity
-            bird.rotation = Math.min(Math.max(bird.velocity * 3, -30), 90);
+            // Rotate based on velocity - adjusted for slower speeds
+            bird.rotation = Math.min(Math.max(bird.velocity * 8, -25), 70);
             ctx.rotate(bird.rotation * Math.PI / 180);
             
             // Body
@@ -240,10 +317,10 @@
             ctx.ellipse(0, 0, bird.width / 2, bird.height / 2, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Wing
+            // Wing - slower flapping animation
             ctx.fillStyle = '#FFA500';
             ctx.beginPath();
-            const wingOffset = Math.sin(frameCount * 0.3) * 5;
+            const wingOffset = Math.sin(frameCount * 0.15) * 6;
             ctx.ellipse(-5, wingOffset, 12, 8, -0.3, 0, Math.PI * 2);
             ctx.fill();
             
@@ -309,11 +386,11 @@
             ctx.fillStyle = skyGradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Clouds
+            // Clouds - slower movement
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            drawCloud(50 - (frameCount * 0.5) % 500, 80);
-            drawCloud(200 - (frameCount * 0.3) % 500, 120);
-            drawCloud(350 - (frameCount * 0.4) % 500, 60);
+            drawCloud(50 - (frameCount * 0.2) % 500, 80);
+            drawCloud(200 - (frameCount * 0.12) % 500, 120);
+            drawCloud(350 - (frameCount * 0.16) % 500, 60);
             
             // Ground
             const groundGradient = ctx.createLinearGradient(0, canvas.height - 50, 0, canvas.height);
@@ -342,9 +419,9 @@
                 particles.push({
                     x: x,
                     y: y,
-                    vx: (Math.random() - 0.5) * 10,
-                    vy: (Math.random() - 0.5) * 10,
-                    life: 30,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    life: 50,
                     color: color,
                     size: Math.random() * 5 + 2
                 });
@@ -356,7 +433,7 @@
                 const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.3;
+                p.vy += 0.15;
                 p.life--;
                 
                 if (p.life <= 0) {
@@ -367,7 +444,7 @@
 
         function drawParticles() {
             particles.forEach(p => {
-                ctx.globalAlpha = p.life / 30;
+                ctx.globalAlpha = p.life / 50;
                 ctx.fillStyle = p.color;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -414,11 +491,21 @@
             return false;
         }
 
-        // Flap function
-        function flap() {
+        // Start game function
+        function startGame() {
             if (gameState === 'start') {
                 gameState = 'playing';
                 startScreen.style.display = 'none';
+                bird.velocity = FLAP_STRENGTH;
+                createParticles(bird.x, bird.y + bird.height / 2, '#FFD700', 5);
+            }
+        }
+
+        // Flap function
+        function flap() {
+            if (gameState === 'start') {
+                startGame();
+                return;
             }
             
             if (gameState === 'playing') {
@@ -468,8 +555,17 @@
             if (gameState === 'playing') {
                 frameCount++;
                 
-                // Update bird
+                // Update bird with floaty physics
                 bird.velocity += GRAVITY;
+                
+                // Apply air resistance for floatier feel
+                bird.velocity *= AIR_RESISTANCE;
+                
+                // Cap the fall speed (terminal velocity)
+                if (bird.velocity > MAX_FALL_SPEED) {
+                    bird.velocity = MAX_FALL_SPEED;
+                }
+                
                 bird.y += bird.velocity;
                 
                 // Spawn pipes
@@ -537,6 +633,12 @@
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             flap();
+        });
+
+        // Start button click handler
+        startBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startGame();
         });
 
         restartBtn.addEventListener('click', resetGame);
